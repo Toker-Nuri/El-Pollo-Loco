@@ -4,7 +4,10 @@ class MovedleObject {
         img;
         height = 150;
         width = 100;
-        imageCache = [];
+        imageCache = {};
+        currentImage = 0;
+        speed = 0.15;
+        flipImage = false;
 
     loadImage(path){
         this.img = new Image();
@@ -13,17 +16,23 @@ class MovedleObject {
     }
 
     loadImages(arrayOfImages){
-        arrayOfImages.forEach(path => {
+        arrayOfImages.forEach((path) => {
         let img = new Image();
             img.src = path;
-            this.imageCache[path] = path;
+            this.imageCache[path] = img;
         });
     }
         moveRight() {
-            console.log("Moving right");
+                setInterval(() => {
+                    this.x += this.speed;
+                }, 1000 / 60);
+            
             
         }
-        moveLeft() {
-            console.log("Moving left");
-        }
+         moveLeft() {
+        setInterval(() => {
+            this.x -= this.speed;
+        }, 1000 / 60);
+    }
+
 }
