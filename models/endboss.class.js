@@ -1,4 +1,7 @@
-class Endboss extends MovedleObject {
+class Endboss extends MovebleObject {
+    height = 400;
+    width = 250; 
+    y = 50;
 
     IMAGES_WALKING = [
         'img/4_enemie_boss_chicken/2_alert/G5.png',
@@ -14,7 +17,16 @@ class Endboss extends MovedleObject {
     constructor(){
         super().loadImage(this.IMAGES_WALKING[0]);
         this.loadImages(this.IMAGES_WALKING);
-        this.x = 700;
+        this.x = 5300;
+        this.animate();
     }
+
+    animate() {
+        setInterval(() => {
+            this.playAnimation(this.IMAGES_WALKING);
+        }, 200);
+        
+    }
+    
 
 }

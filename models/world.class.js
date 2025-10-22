@@ -35,23 +35,34 @@ class World {
     }
 
 
-    addObjectsToMap(objects) {
-        objects.forEach((object) => {
-            this.addToMap(object);
+    addObjectsToMap(MoObjects) {
+        MoObjects.forEach((MoObjects) => {
+            this.addToMap(MoObjects);
         });
     }
 
-    addToMap(object) {
-        if (object.flipImage) {
-            this.ctx.save();
-            this.ctx.translate(object.width, 0);
-            this.ctx.scale(-1, 1);
-            object.x = object.x * -1;
+    addToMap(MoObjects) {
+        if (MoObjects.otherDirection) {
+           this.flipImages(MoObjects);
         }
-        this.ctx.drawImage(object.img, object.x, object.y, object.width, object.height);
-        if (object.flipImage) {
-            object.x = object.x * -1;
-            this.ctx.restore();
+        MoObjects.draw(this.ctx);
+        MoObjects.drawFrame(this.ctx);
+
+        if (MoObjects.otherDirection) {
+            this.flipImagesBack(MoObjects);
         }
     }
+
+    flipImages(MoObjects){
+        this.ctx.save();
+        this.ctx.translate(MoObjects.width, 0);
+        this.ctx.scale(-1, 1);
+        MoObjects.x = MoObjects.x * -1;
+    }
+
+    flipImagesBack(MoObjects){
+        MoObjects.x = MoObjects.x * -1;
+            this.ctx.restore();
+    }
+
 }
