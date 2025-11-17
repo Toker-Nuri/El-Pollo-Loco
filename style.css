@@ -1,10 +1,137 @@
-body{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+@font-face {
+    font-family: 'Rye';
+    src: url('fonts/Rye-Regular.ttf') format('truetype');
 }
 
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-size: cover;
+    font-family: "Rye", serif;
+    background-position: center;
+    background-image: url('img/desert.png');
+}
+
+.headline {
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    white-space: nowrap;
+}
+
+h1 {
+    font-size: 80px;
+    letter-spacing: 5px;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+    margin: 0;
+    text-align: center;
+}
 
 canvas {
     background-color: #000;
+}
+
+#game-over-overlay {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    flex-direction: column;
+    background-color: #ffffffc9;
+    width: 720px;
+    height: 480px;
+    object-fit: contain;
+}
+
+#game-over-overlay.hidden {
+    display: none;
+}
+
+#game-over-overlay img {
+    width: 580px;
+}
+.over-button {
+    padding: 10px 15px;;
+    font-family: 'Rye', cursive;
+    font-size: 20px;
+    border: solid 3px #ea2222;
+    border-radius: 10px;
+    transition: all 0.2s ease-in-out;
+    background: #ffb700;
+    color: #000;
+    cursor: pointer;
+    margin: 6px;
+}
+.over-button:hover {
+    transform: scale(1.1);
+    background: #ffd7a2;
+}
+.button-game-over-wrapper {
+    display: flex;
+    gap: 20px;
+}
+
+#start-screen {
+    position: absolute;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+  
+    z-index: 10000; /* über dem Canvas */
+}
+
+#start-screen.hidden {
+    display: none;
+}
+
+#start-screen img {
+    width: 720px;
+    height: 480px;
+}
+
+.start-screen.hidden {
+    display: none;
+}
+
+.start-button-wrapper {
+    position: absolute;
+    display: flex;
+    gap: 20px;
+    padding-left: 20px;
+    padding-top: 35px;
+}
+
+.start-button {
+    padding: 10px 15px;
+    font-family: 'Rye', cursive;
+    font-size: 20px;
+    border: solid 3px #ea2222;
+    border-radius: 10px;
+    transition: all 0.2s ease-in-out;
+    background: #ffb700;
+    color: #000;
+    cursor: pointer;
+    margin: 6px;
+}
+
+.start-button:hover {
+    transform: scale(1.1);
+    background: #ffd7a2;
 }

@@ -4,9 +4,12 @@ class Clouds extends MovebleObject {
     width = 500;
 
 
-    constructor() {
+    constructor(x = null, y = null) {
         super().loadImage('img/5_background/layers/4_clouds/1.png');
-        this.x = Math.random() * 500;
+        this.x = (typeof x === 'number') ? x : Math.random() * 500;
+        if (typeof y === 'number') this.y = y;
+           
+      
         this.animate();
 
     }

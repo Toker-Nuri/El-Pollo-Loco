@@ -5,25 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>El Pollo Loco</title>
     <link rel="stylesheet" href="style.css">
+    <script src="models/drawable-object.class.js"></script>
+    <script src="models/status-bar.class.js"></script>
+    <script src="models/coin-bar.class.js"></script>
+    <script src="models/bottle-bar.class.js"></script>
     <script src="models/moveble-object.class.js"></script>
+    <script src="models/bottle.class.js"></script>
+    <script src="models/coin.class.js"></script>
     <script src="models/charakter.class.js"></script>
     <script src="models/chicken.class.js"></script>
+    <script src="models/chicken-small.class.js"></script>
     <script src="models/clouds.class.js"></script>
     <script src="models/background-object.class.js"></script>
+    <script src="models/game-over.class.js"></script>
     <script src="models/world.class.js"></script>
     <script src="models/keyboard.class.js"></script>
     <script src="models/level.class.js"></script>
+    <script src="models/throwable-objekt.class.js"></script>
     <script src="models/endboss.class.js"></script>
+    <script src="models/endboss-bar.class.js"></script>
     <script src="levels/level1.js"></script>
     <script src="js/game.js"></script>
+    <script src="js/game-start-and-over.js"></script>
 </head>
-<body onload="init()">
-    
-<H1>El Pollo Loco</H1>
+<body>
+    <div class="headline"> 
+        <H1>El Pollo Loco</H1>
+    </div> 
 
-<canvas id="canvas" width="720" height="480">
+    <canvas id="canvas" width="720" height="480"></canvas>
 
-</canvas>
+    <!-- Start Screen mit Buttons -->
+    <div id="start-screen" class="start-screen">
+        <img src="img/9_intro_outro_screens/start/startscreen_2.png" alt="Start Screen">
+        <div class="start-button-wrapper">
+            <button class="start-button" onclick="startGame()">Spielen</button>
+            <button class="start-button" onclick="showControls()">Steuerung</button>
+            <button class="start-button" onclick="showStory()">Geschichte</button>
+        </div>
+    </div>
 
+    <!-- Game Over Screen mit Buttons -->
+    <div id="game-over-overlay" class="game-over-overlay hidden">
+        <img id="game-over-image" src="" alt="Game Over">
+        <div class="button-game-over-wrapper">
+            <button class="over-button" onclick="restartGame()">Neustart</button>
+            <button class="over-button" onclick="backToMenu()">Menü</button>
+        </div>
+    </div>
 </body>
 </html>
