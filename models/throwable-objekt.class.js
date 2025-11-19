@@ -52,12 +52,14 @@ class ThrowableObject extends MovebleObject {
             if (this.isSplashing) return;
             this.x += 6;
         }, 25);
+        playSound('bottle_throw');
     }     
     
     animate() {
         this.rotationInterval = setInterval(() => {
             if (this.isSplashing) return;
             this.playAnimation(this.IMAGES_BOTTLE_ROTATION);
+       
         }, 60);
     
 }
@@ -71,6 +73,7 @@ class ThrowableObject extends MovebleObject {
             clearInterval(this.rotationInterval);
             this.rotationInterval = null;
         }
+        playSound('bottle_shatter');
         let frame = 0;
         const splashAnimInterval = setInterval(() => {
             this.playAnimation(this.IMAGES_BOTTLE_SPLASH);

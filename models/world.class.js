@@ -242,6 +242,7 @@ class World {
         this.addObjectsToMap(this.level.BackgroundObject);
         this.addObjectsToMap(this.level.clouds);
         this.addObjectsToMap(this.level.enemies);
+        this.addObjectsToMap(this.coins);
         this.ctx.translate(-this.camera_x, 0);
 
         this.addToMap(this.statusBar);
@@ -251,7 +252,7 @@ class World {
 
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.bottles);
-        this.addObjectsToMap(this.coins);
+       
         this.addToMap(this.character);
         this.addObjectsToMap(this.throwableObjects);
         this.ctx.translate(-this.camera_x, 0);     

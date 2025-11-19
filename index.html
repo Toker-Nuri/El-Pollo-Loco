@@ -29,18 +29,22 @@
     <script src="levels/level1.js"></script>
     <script src="js/game.js"></script>
     <script src="js/game-controls.js"></script>
+    <script src="js/eventlistener.js"></script>
+    <script src="js/audio.js"></script>
 </head>
 
 <body>
+    <div class="rotate-screen">
+        <div class="rotate">
+            Bitte drehe
+            <img src="img/icons/ROTATE_icon.png" alt="Rotate Screen">
+            dein Gerät
+        </div>
+    </div>
     <div class="headline">
         <H1>El Pollo Loco</H1>
     </div>
-
-
     <div id="game-container" class="game-container">
-        <canvas id="canvas" width="720" height="480"></canvas>
-
-        <!-- NEU: id="main-menu" hinzufügen -->
         <div id="main-menu" class="main-menu">
             <img src="img/9_intro_outro_screens/start/startscreen_2.png" alt="Start Screen">
             <div class="start-button-wrapper">
@@ -50,7 +54,9 @@
                 <button class="start-button" onclick="showSettings()">Einstellungen</button>
             </div>
         </div>
-
+        <div id="audio-controls" class="audio-controls">
+            <img id="audio-toggle" onclick="toggleAudioAndImage()" class="audio-icon" src="img/icons/SOUND_ON_icon.png" alt="Audio umschalten">
+        </div>
         <div id="game-over-overlay" class="game-over-overlay hidden">
             <img id="game-over-image" src="" alt="Game Over">
             <div class="button-game-over-wrapper">
@@ -58,7 +64,6 @@
                 <button class="over-button" onclick="backToMenu()">Menü</button>
             </div>
         </div>
-
         <div id="controls-game-overlay" class="controls-game hidden">
             <button class="close-button" onclick="closeControls()">Schließen</button>
             <div class="screen-title">
@@ -109,11 +114,21 @@
             </div>
             <div class="settings">
                 <button id="sound-control-btn" class="button-settings" onclick="toggleSound()">Sound On</button>
-
+            </div>
         </div>
 
+        <canvas id="canvas" width="720" height="480"></canvas>
 
-
+        <div class="mobile-touch-interface">
+            <div class="mobile-touch">
+                <img id="touch-left" class="touch-button" src="img/icons/MOBILE_LEFT_icon.png" alt="Links gehen">
+                <img id="touch-right" class="touch-button" src="img/icons/MOBILE_RIGHT_icon.png" alt="Rechts gehen">
+            </div>
+            <div class="mobile-touch">
+                <img id="touch-jump" class="touch-button" src="img/icons/MOBILE_JUMP_icon.png" alt="Springen">
+                <img id="touch-throw" class="touch-button" src="img/icons/MOBILE_THROW_icon.png" alt="Flaschen werfen">
+            </div>
+        </div>
     </div>
 </body>
 

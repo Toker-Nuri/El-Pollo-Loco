@@ -17,6 +17,7 @@ class Bottles extends MovebleObject {
 
     initializeImage() {
         this.loadImage(this.IMAGES_BOTTLE[Math.round(Math.random())]);
+          playSound('bottle_collect');
     }
 
     initializeProperties(x, y) {
@@ -29,10 +30,12 @@ class Bottles extends MovebleObject {
             left: 5
         };
         this.collected = false;
+          playSound('bottle_collect');
     }
  
     draw(ctx) {
         if (this.collected) return;
         super.draw(ctx);
+          playSound('bottle_collect');
     }
 }

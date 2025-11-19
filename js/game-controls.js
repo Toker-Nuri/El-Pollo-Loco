@@ -5,7 +5,7 @@ function setCanvasHidden(hidden) {
 }
 
 function startGame() {
-    document.getElementById('main-menu').classList.add('hidden'); // Nur Menü verstecken
+    document.getElementById('main-menu').classList.add('hidden'); 
     document.getElementById('controls-game-overlay').classList.add('hidden');
     document.getElementById('game-over-overlay').classList.add('hidden');
     setCanvasHidden(false);
@@ -13,13 +13,13 @@ function startGame() {
 }
 
 function showControls() {
-    document.getElementById('main-menu').classList.add('hidden'); // Menü weg
-    document.getElementById('controls-game-overlay').classList.remove('hidden'); // Controls zeigen
+    document.getElementById('main-menu').classList.add('hidden');
+    document.getElementById('controls-game-overlay').classList.remove('hidden');
 }
 
 function closeControls() {
-    document.getElementById('controls-game-overlay').classList.add('hidden'); // Controls weg
-    document.getElementById('main-menu').classList.remove('hidden'); // Menü zurück
+    document.getElementById('controls-game-overlay').classList.add('hidden');
+    document.getElementById('main-menu').classList.remove('hidden'); 
 }
 
 function showStory() {

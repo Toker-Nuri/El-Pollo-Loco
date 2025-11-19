@@ -34,6 +34,7 @@ class Chicken extends MovebleObject {
         setInterval(() => {
             if (!this.isDead) {
                 this.playAnimation(this.IMAGES_WALKING);
+
             }
         }, 200);
     }
@@ -42,6 +43,7 @@ class Chicken extends MovebleObject {
         if (!this.isDead) {
             this.isDead = true;
             this.speed = 0;
+            playSound('chicken_die');
             this.loadImage(this.IMAGES_DEAD[0]);
             this.deathTimeout = setTimeout(() => {
                 this.height = 0; 

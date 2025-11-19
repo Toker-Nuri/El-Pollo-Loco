@@ -2,7 +2,7 @@ class Endboss extends MovebleObject {
     height = 400;
     width = 250; 
     y = 65;
-    speed = 1;
+    speed = 2;
     isActivated = false;
     hasAlertPlayed = false;
     isAttacking = false;
@@ -11,8 +11,8 @@ class Endboss extends MovebleObject {
     hitsRemaining = 8;
     isDead = false;
     ALERT_DURATION = 100;      
-    MOVE_DURATION = 500;      
-    ATTACK_DURATION = 500;     
+    MOVE_DURATION = 800;      
+    ATTACK_DURATION = 800;     
     alertScheduled = false;
     isMoving = false;
     lastActionTime = 0;

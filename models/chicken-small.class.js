@@ -42,6 +42,7 @@ class ChickenSmall extends MovebleObject {
         if (!this.isDead) {
             this.isDead = true;
             this.speed = 0;
+             playSound('chicken_die');
             this.loadImage(this.IMAGES_DEAD[0]);
             this.deathTimeout = setTimeout(() => {
                 this.height = 0; 
