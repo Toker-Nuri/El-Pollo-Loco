@@ -3,10 +3,11 @@ let world;
 let keyboard = new Keyboard();
 
 function init() {
+    if (typeof createLevel1 === 'function') {
+        level1 = createLevel1();
+    }
     canvas = document.getElementById("canvas");
     world = new World(canvas, keyboard);
-
-
 }
 
 window.addEventListener('keydown', (e) => {

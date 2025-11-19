@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>El Pollo Loco</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="img/icons/favicon_chicken.png">
     <script src="models/drawable-object.class.js"></script>
     <script src="models/status-bar.class.js"></script>
     <script src="models/coin-bar.class.js"></script>
@@ -26,32 +28,93 @@
     <script src="models/endboss-bar.class.js"></script>
     <script src="levels/level1.js"></script>
     <script src="js/game.js"></script>
-    <script src="js/game-start-and-over.js"></script>
+    <script src="js/game-controls.js"></script>
 </head>
+
 <body>
-    <div class="headline"> 
+    <div class="headline">
         <H1>El Pollo Loco</H1>
-    </div> 
-
-    <canvas id="canvas" width="720" height="480"></canvas>
-
-    <!-- Start Screen mit Buttons -->
-    <div id="start-screen" class="start-screen">
-        <img src="img/9_intro_outro_screens/start/startscreen_2.png" alt="Start Screen">
-        <div class="start-button-wrapper">
-            <button class="start-button" onclick="startGame()">Spielen</button>
-            <button class="start-button" onclick="showControls()">Steuerung</button>
-            <button class="start-button" onclick="showStory()">Geschichte</button>
-        </div>
     </div>
 
-    <!-- Game Over Screen mit Buttons -->
-    <div id="game-over-overlay" class="game-over-overlay hidden">
-        <img id="game-over-image" src="" alt="Game Over">
-        <div class="button-game-over-wrapper">
-            <button class="over-button" onclick="restartGame()">Neustart</button>
-            <button class="over-button" onclick="backToMenu()">Menü</button>
+
+    <div id="game-container" class="game-container">
+        <canvas id="canvas" width="720" height="480"></canvas>
+
+        <!-- NEU: id="main-menu" hinzufügen -->
+        <div id="main-menu" class="main-menu">
+            <img src="img/9_intro_outro_screens/start/startscreen_2.png" alt="Start Screen">
+            <div class="start-button-wrapper">
+                <button class="start-button" onclick="startGame()">Spielen</button>
+                <button class="start-button" onclick="showControls()">Steuerung</button>
+                <button class="start-button" onclick="showStory()">Geschichte</button>
+                <button class="start-button" onclick="showSettings()">Einstellungen</button>
+            </div>
         </div>
+
+        <div id="game-over-overlay" class="game-over-overlay hidden">
+            <img id="game-over-image" src="" alt="Game Over">
+            <div class="button-game-over-wrapper">
+                <button class="over-button" onclick="restartGame()">Neustart</button>
+                <button class="over-button" onclick="backToMenu()">Menü</button>
+            </div>
+        </div>
+
+        <div id="controls-game-overlay" class="controls-game hidden">
+            <button class="close-button" onclick="closeControls()">Schließen</button>
+            <div class="screen-title">
+                <h2>Steuerung</h2>
+            </div>
+            <div class="controls">
+                <div class="controls-container">
+                    <div class="container jc-center">
+                        <img src="img/icons/left-right-key-2.PNG" alt="Pfeiltasten">
+                    </div>
+                    <div class="container jc-center">
+                        <img src="img/icons/jump-img.png" alt="Springen">
+                    </div>
+                    <div class="container jc-center">
+                        <img src="img/icons/throw-img.png" alt="Werfen">
+                    </div>
+                </div>
+                <div class="controls-container">
+                    <div class="container jc-left">
+                        <span>Verwenden Sie die Pfeiltasten um die Bewegung zu steuern.</span>
+                    </div>
+                    <div class="container jc-left">
+                        <span>Drücken Sie die Leertaste um zu springen.</span>
+                    </div>
+                    <div class="container jc-left">
+                        <span>Drücken Sie die D-Taste um Flaschen zu werfen.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="story-game-overlay" class="story-game-overlay hidden">
+            <button class="close-button" onclick="closeStory()">Schließen</button>
+            <div class="screen-title">
+                <h2>Die Legende von Pepe</h2>
+            </div>
+            <div class="story">
+                <p>Pepe, ein erfinderischer Dorfbewohner aus Mexiko, lebt in einem kleinen, sonnigen Ort am Fuße der
+                    Berge. Eines Tages wird das Dorf von einer mysteriösen Maschinenbande bedroht, die alles in Stahl
+                    verwandelt. Pepe, bekannt für seine Klugheit und seinen Mut, nimmt die Herausforderung an. Mit einem
+                    selbstgebauten Gerät aus alten Werkzeugen macht er sich auf den Weg, um seine Heimat zu retten und
+                    das natürliche Gleichgewicht wiederherzustellen.</p>
+            </div>
+        </div>
+        <div id="settings-game-overlay" class="settings-game-overlay hidden">
+            <button class="close-button" onclick="closeSettings()">Schließen</button>
+            <div class="screen-title">
+                <h2>Einstellungen</h2>
+            </div>
+            <div class="settings">
+                <button id="sound-control-btn" class="button-settings" onclick="toggleSound()">Sound On</button>
+
+        </div>
+
+
+
     </div>
 </body>
+
 </html>

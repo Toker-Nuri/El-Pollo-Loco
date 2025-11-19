@@ -1,5 +1,6 @@
 class EndbossBar extends DrawableObject {
     percentage = 100;
+    visible = false;
 
     IMAGES_HEALTH = [
         'img/7_statusbars/2_statusbar_endboss/green/green0.png',
@@ -13,17 +14,32 @@ class EndbossBar extends DrawableObject {
     constructor() {
         super();
         this.loadImages(this.IMAGES_HEALTH);
-            this.x = 480;
-            this.y = 10;
-            this.width = 200;
-            this.height = 60;
+        this.x = 480;
+        this.y = 10;
+        this.width = 200;
+        this.height = 60;
         this.setPercentage(100);
+    }
+
+    show() {
+        this.visible = true;
+    }
+
+    hide() {
+        this.visible = false;
     }
 
     setPercentage(percentage) {
         this.percentage = percentage;
         let path = this.IMAGES_HEALTH[this.resolveImageIndex()];
         this.img = this.imageCache[path];
+    }
+
+    draw(ctx) {
+        if (!this.visible) {
+            return;
+        }
+        super.draw(ctx);
     }
 
     resolveImageIndex() {

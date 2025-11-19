@@ -30,7 +30,6 @@ class World {
         this.setWorld();
         this.run();
 
-        // Canvas-Klicks abfangen und an GameOver weiterreichen
         this.canvas.addEventListener('click', (e) => {
             if (!this.gameOver) return;
             const rect = this.canvas.getBoundingClientRect();
@@ -50,6 +49,7 @@ class World {
             });
         }
     }
+
     createCoins() {
         this.coins = [
             new Coins(300, Math.random() * 80 + 40),
@@ -96,16 +96,16 @@ class World {
             this.checkCollisions();
             this.checkGameOver(); 
             this.checkThrowObjects();
+            this.updateEndbossBarVisibility();
         }, 1000 / 60);
     }
+    
     checkThrowObjects() {
         if (this.keyboard.D && this.collectedBottles > 0 && !this.bottleThrowTimeout) {
-            // Blockieren des Werfens, wenn der Charakter rechts von einem aktiven Endboss ist
             const blockingEndboss = this.level.enemies.some((e) => {
                 return e instanceof Endboss && e.isActivated && !e.isDead && this.character.x > e.x;
             });
             if (blockingEndboss) {
-                // keine Flasche werfen, Spieler ist rechts vom Endboss
                 this.keyboard.D = false;
                 return;
             }
@@ -133,9 +133,8 @@ class World {
                 const activationDistance = 400;
                 if (this.character.x > enemy.x - activationDistance) {
                     enemy.isActivated = true;
-                    // Sofort Alert starten
-                    enemy.alertScheduled = false;  // sicherstellen dass Timer startet
-                    enemy.hasAlertPlayed = false; // Alert kann starten
+                    enemy.alertScheduled = false; 
+                    enemy.hasAlertPlayed = false; 
                 }
             }
         });
@@ -168,10 +167,8 @@ class World {
                 if (enemy.isDead) return;
                 if (!this.character.isColliding(enemy)) return;
                 if (this.character.isHurt()) return;
-                // Endboss-Kollisionsschaden: immer höherer Schaden bei Kontakt, sobald aktiviert
                 if (enemy instanceof Endboss) {
                     if (enemy.isActivated && !enemy.isTakingDamage && !enemy.isDying) {
-                        // deutlicherer Schaden durch den Endboss
                         this.character.hit(30);
                         this.statusBar.setPercentage(this.character.energy);
                     }
@@ -182,7 +179,6 @@ class World {
             });
         }
 
-        // Flaschen-Kollisionen mit Gegnern (inkl. Endboss)
         this.throwableObjects.forEach((bottle) => {
             this.level.enemies.forEach((enemy) => {
                 if (!enemy.isDead && bottle.isColliding(enemy) && !bottle.isSplashing) {
@@ -197,20 +193,11 @@ class World {
         });
         this.throwableObjects = this.throwableObjects.filter((b) => !b.toBeRemoved);
 
-        // Charakter darf nicht rechts am Endboss vorbeikommen
         this.level.enemies.forEach((enemy) => {
             if (!(enemy instanceof Endboss)) return;
-            // Nur wenn der Endboss aktiv ist, blockiert er den Weg
             if (!enemy.isActivated || enemy.isDead || enemy.isDying) return;
             const cRight = this.character.x + this.character.width - this.character.offset.right;
             const eLeft = enemy.x + enemy.offset.left;
-            // Wenn Charakter die linke Kante des Endboss überschreitet, nach links zurücksetzen
-            // --- Dieser Block blockiert das Vorbeigehen. Entfernen oder auskommentieren, damit der Spieler rechts vorbeikommt.
-            /*
-            if (cRight > eLeft) {
-                this.character.x = eLeft - (this.character.width - this.character.offset.right);
-            }
-            */
         });
 
         this.coins.forEach((coin) => {
@@ -249,35 +236,25 @@ class World {
     }
 
     draw() {
-        // Clear canvas
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        // Hintergrund + Kamera
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.level.BackgroundObject);
         this.addObjectsToMap(this.level.clouds);
         this.addObjectsToMap(this.level.enemies);
         this.ctx.translate(-this.camera_x, 0);
 
-        // HUD (fest)
         this.addToMap(this.statusBar);
         this.addToMap(this.coinBar);
         this.addToMap(this.bottleBar);
         this.addToMap(this.endbossBar);
 
-        // Objekte vor dem Charakter (mit Kamera)
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.bottles);
         this.addObjectsToMap(this.coins);
         this.addToMap(this.character);
         this.addObjectsToMap(this.throwableObjects);
-        this.ctx.translate(-this.camera_x, 0);
-
-        // Am Ende der draw()-Methode:
-        // GameOver wird per DOM-Overlay gezeigt (nicht auf dem Canvas)
-        // if (this.gameOver) { this.addToMap(this.gameOver); }
-        
-        // Request next frame
+        this.ctx.translate(-this.camera_x, 0);     
         let self = this;
         requestAnimationFrame(function () {
             self.draw();
@@ -293,14 +270,10 @@ class World {
 
     addToMap(MoObject) {
         if (!MoObject) return;
-        // Wenn gespiegelt werden soll, machen wir das nur im Canvas-Kontext.
         if (MoObject.otherDirection) {
             this.ctx.save();
-            // Ursprung an die rechte Kante des Objekts verschieben und horizontal spiegeln.
             this.ctx.translate(MoObject.x + MoObject.width, 0);
             this.ctx.scale(-1, 1);
-            // Damit das draw(...) des Objekts an der richtigen Stelle zeichnet,
-            // setzen wir kurz x auf 0, rufen draw auf und stellen x zurück.
             const oldX = MoObject.x;
             MoObject.x = 0;
             MoObject.draw(this.ctx);
@@ -311,25 +284,32 @@ class World {
             this.ctx.restore();
             return;
         }
-        // Normalfall (nicht gespiegelt)
         MoObject.draw(this.ctx);
         if (typeof MoObject.drawFrame === 'function') {
             MoObject.drawFrame(this.ctx);
         }
     }
 
+    updateEndbossBarVisibility() {
+        if (!this.endbossBar || !this.level || !this.level.enemies) {
+            return;
+        }
+        const boss = this.level.enemies.find((enemy) => enemy instanceof Endboss);
+        if (boss && boss.isActivated && !boss.isDead && !boss.isDying) {
+            this.endbossBar.show();
+        } else {
+            this.endbossBar.hide();
+        }
+    }
+
     flipImages(MoObject) {
-        // einfacher Flip: Canvas spiegeln (Objekt x NICHT ändern)
         this.ctx.save();
         this.ctx.translate(MoObject.x + MoObject.width, 0);
         this.ctx.scale(-1, 1);
-        // NICHT: MoObject.x = MoObject.x * -1;
     }
 
     flipImagesBack(MoObject) {
-        // restore: nur Kontext zurücksetzen, Objektkoordinaten bleiben gleich
         this.ctx.restore();
-        // NICHT: MoObject.x = MoObject.x * -1;
     }
 
 }

@@ -3,6 +3,10 @@
     src: url('fonts/Rye-Regular.ttf') format('truetype');
 }
 
+* {
+    box-sizing: border-box;
+}
+
 html,
 body {
     margin: 0;
@@ -19,12 +23,13 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
     background-size: cover;
     font-family: "Rye", serif;
     background-position: center;
     background-image: url('img/desert.png');
 }
+
+
 
 .headline {
     position: absolute;
@@ -43,8 +48,14 @@ h1 {
     text-align: center;
 }
 
-canvas {
-    background-color: #000;
+.game-container {
+    width: 720px;
+    height: 480px;
+    position: relative;
+}
+
+#canvas.canvas-hidden {
+    display: none;
 }
 
 #game-over-overlay {
@@ -67,11 +78,13 @@ canvas {
 #game-over-overlay img {
     width: 580px;
 }
+
 .over-button {
-    padding: 10px 15px;;
+    padding: 10px 15px;
+    ;
     font-family: 'Rye', cursive;
     font-size: 20px;
-    border: solid 3px #ea2222;
+    border: solid 3px #A26E5B;
     border-radius: 10px;
     transition: all 0.2s ease-in-out;
     background: #ffb700;
@@ -79,50 +92,213 @@ canvas {
     cursor: pointer;
     margin: 6px;
 }
+
 .over-button:hover {
     transform: scale(1.1);
     background: #ffd7a2;
 }
+
+#controls-game-overlay {
+    position: absolute;
+    z-index: 999;
+    flex-direction: column;
+    backdrop-filter: blur(15px);
+    width: 720px;
+    height: 480px;
+    top: 0;
+    left: 0;
+}
+
+.close-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 10;
+    padding: 12px 12px;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+    text-transform: uppercase;
+    background-color: #FECC02;
+    color: black;
+    border: 4px solid #8b3a0b;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Rye';
+    user-select: none;
+}
+
+.close-button:hover {
+    transform: scale(1.1);
+    background: #ffd7a2;
+}
+
+.screen-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    flex-direction: column;
+}
+
+#controls-game-overlay.hidden {
+    display: none;
+}
+
 .button-game-over-wrapper {
     display: flex;
     gap: 20px;
 }
 
-#start-screen {
+.controls-container {
+    height: 70px;
+    padding-left: 20px;
+}
+
+.container {
+    height: 70px;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+}
+
+.jc-center {
+    justify-content: center;
+}
+
+.jc-left {
+    justify-content: flex-start;
+    padding-left: 40px;
+    width: 350px;
+}
+
+.controls img {
+    width: 50px;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    margin: 0 50px;
+}
+
+.controls-text {
+    padding-bottom: 10px;
+}
+
+.controls,
+.story {
+    display: flex;
+    justify-content: center;
+    margin: 0 50px;
+}
+
+.story-game-overlay {
+    position: absolute;
+    z-index: 999;
+    flex-direction: column;
+    backdrop-filter: blur(15px);
+    width: 720px;
+    height: 480px;
+    top: 0;
+    left: 0;
+}
+
+.story-game-overlay.hidden {
+    display: none;
+}
+
+.story {
+    font-size: 18px;
+    font-weight: 700;
+    font-family: 'Courier New', Courier, monospace;
+    text-align: justify;
+}
+
+.settings-game-overlay {
+    position: absolute;
+    z-index: 999;
+    backdrop-filter: blur(15px);
+    width: 720px;
+    height: 480px;
+    top: 0;
+    left: 0;
+}
+
+.settings-game-overlay.hidden {
+    display: none;
+}
+
+.settings {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.button-settings {
+    padding: 16px 28px;
+    font-size: 18px;
+    font-weight: 800;
+    text-align: center;
+    text-transform: uppercase;
+    background-color: #FECC02;
+    color: black;
+    border: 4px solid #8b3a0b;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Rye';
+    user-select: none;
+    min-width: 140px;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+}
+
+
+.main-menu {
     position: absolute;
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
-  
-    z-index: 10000; /* über dem Canvas */
+    z-index: 100;
 }
 
-#start-screen.hidden {
+.main-menu.hidden {
     display: none;
 }
 
-#start-screen img {
+.main-menu img {
     width: 720px;
     height: 480px;
 }
 
-.start-screen.hidden {
+.main-menu.hidden {
     display: none;
 }
 
 .start-button-wrapper {
-    position: absolute;
     display: flex;
     gap: 20px;
     padding-left: 20px;
     padding-top: 35px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
 }
 
 .start-button {
     padding: 10px 15px;
     font-family: 'Rye', cursive;
     font-size: 20px;
-    border: solid 3px #ea2222;
+    border: solid 3px #A26E5B;
     border-radius: 10px;
     transition: all 0.2s ease-in-out;
     background: #ffb700;
@@ -134,4 +310,25 @@ canvas {
 .start-button:hover {
     transform: scale(1.1);
     background: #ffd7a2;
+}
+
+/* Game container: Referenz für absolute Positionierung */
+.game-container {
+    width: 720px;
+    height: 480px;
+    position: relative;
+    /* wichtig: Kinder können absolut positioniert werden */
+    display: block;
+}
+
+.main-menu,
+#game-over-overlay,
+#controls-game-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    /* höher als Canvas */
 }
