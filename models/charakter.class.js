@@ -1,3 +1,8 @@
+/**
+ * Represents the main player character Pepe.
+ *
+ * @extends MovebleObject
+ */
 class Charakter extends MovebleObject {
     width = 100;
     height = 280;
@@ -70,18 +75,36 @@ class Charakter extends MovebleObject {
 
     currentImage = 0;
     world;
+
+    /**
+     * Creates a new character instance and initializes sprites, physics and animation.
+     */
     constructor() {
         super().loadImage('img/2_character_pepe/2_walk/W-21.png');
+        this.initCharacterImages();
+        this.world = world;
+        this.applyGravity();
+        this.animate();
+        this.wasHurt = false;
+        this.initOffset();
+    }
+
+    /**
+     * Loads all character sprite image sequences.
+     */
+    initCharacterImages() {
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_JUMPING);
         this.loadImages(this.IMAGES_DEAD);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_IDLE);
         this.loadImages(this.IMAGES_LONGIDLE);
-        this.world = world;
-        this.applyGravity();
-        this.animate();
-        this.wasHurt = false;
+    }
+
+    /**
+     * Initializes the collision offset for the character hitbox.
+     */
+    initOffset() {
         this.offset = {
             top: 60,
             right: 20,
@@ -90,68 +113,145 @@ class Charakter extends MovebleObject {
         };
     }
 
+    /**
+     * Starts the movement and animation loops for the character.
+     */
     animate() {
+        this.startMovementLoop();
+        this.startAnimationLoop();
+    }
 
+    /**
+     * Starts the loop responsible for movement, jumping, running sound and camera.
+     */
+    startMovementLoop() {
         setInterval(() => {
-            let isMovingHorizontal = false;
-            if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
-                this.otherDirection = false;
-                this.moveRight();
-                this.lastMove = new Date().getTime();
-                isMovingHorizontal = true;
-            }
-
-            if (this.world.keyboard.LEFT && this.x > 0) {
-                this.otherDirection = true;
-                this.moveLeft();
-                this.lastMove = new Date().getTime();
-                isMovingHorizontal = true;
-            }
-
-            if (this.world.keyboard.SPACE && !this.isAboveGround()) {
-                this.Jump();
-                this.lastMove = new Date().getTime();
-            }
-            if (typeof playSound === 'function' && typeof stopSound === 'function') {
-                if (isMovingHorizontal && !this.isAboveGround()) {
-                    playSound('running', { loop: true, reset: false });
-                } else {
-                    stopSound('running', { reset: false });
-                }
-            }
-            this.world.camera_x = -this.x + 100;
+            const isMovingHorizontal = this.handleHorizontalMovement();
+            this.handleJumpInput();
+            this.updateRunningSound(isMovingHorizontal);
+            this.updateCameraPosition();
         }, 1000 / 60);
+    }
 
+    /**
+     * Handles horizontal movement based on keyboard input.
+     *
+     * @returns {boolean} True if the character moved horizontally this frame.
+     */
+    handleHorizontalMovement() {
+        let isMovingHorizontal = false;
+        if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
+            this.otherDirection = false;
+            this.moveRight();
+            this.lastMove = new Date().getTime();
+            isMovingHorizontal = true;
+        }
+        if (this.world.keyboard.LEFT && this.x > 0) {
+            this.otherDirection = true;
+            this.moveLeft();
+            this.lastMove = new Date().getTime();
+            isMovingHorizontal = true;
+        }
+        return isMovingHorizontal;
+    }
+
+    /**
+     * Handles jump input if the SPACE key is pressed and the character is on the ground.
+     */
+    handleJumpInput() {
+        if (this.world.keyboard.SPACE && !this.isAboveGround()) {
+            this.Jump();
+            this.lastMove = new Date().getTime();
+        }
+    }
+
+    /**
+     * Updates the running sound based on movement and ground state.
+     *
+     * @param {boolean} isMovingHorizontal - Whether the character moved horizontally.
+     */
+    updateRunningSound(isMovingHorizontal) {
+        if (typeof playSound === 'function' && typeof stopSound === 'function') {
+            if (isMovingHorizontal && !this.isAboveGround()) {
+                playSound('running', { loop: true, reset: false });
+            } else {
+                stopSound('running', { reset: false });
+            }
+        }
+    }
+
+    /**
+     * Updates the camera position to follow the character.
+     */
+    updateCameraPosition() {
+        this.world.camera_x = -this.x + 100;
+    }
+
+    /**
+     * Starts the loop responsible for playing animations depending on state.
+     */
+    startAnimationLoop() {
         setInterval(() => {
             if (this.isDead()) {
-                this.playAnimation(this.IMAGES_DEAD);
+                this.playDeadAnimation();
             } else if (this.isHurt()) {
-                this.playAnimation(this.IMAGES_HURT);
-
-                // Hurt-Sound nur beim Übergang "nicht verletzt -> verletzt"
-                if (!this.wasHurt && typeof playSound === 'function') {
-                    playSound('hurt');  
-                    this.wasHurt = true;
-                }
+                this.handleHurtState();
+            } else {
+                this.handleNormalAnimationState();
             }
-            else {
-                this.wasHurt = false;
-                if (this.isAboveGround()) {
-                    this.playAnimation(this.IMAGES_JUMPING);
-                } else {
-                    if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-                        this.playAnimation(this.IMAGES_WALKING);
-                    } else {
-                        let timeSinceLastMove = new Date().getTime() - this.lastMove;
-                        if (timeSinceLastMove < 1000) {
-                            this.playAnimation(this.IMAGES_IDLE);
-                        } else {
-                            this.playAnimation(this.IMAGES_LONGIDLE);
-                        }
-                    }
-                }
-            }
-
         }, 60);
+    }
+
+    /**
+     * Plays the death animation.
+     */
+    playDeadAnimation() {
+        this.playAnimation(this.IMAGES_DEAD);
+    }
+
+    /**
+     * Handles the hurt state animation and sound.
+     */
+    handleHurtState() {
+        this.playAnimation(this.IMAGES_HURT);
+        if (!this.wasHurt && typeof playSound === 'function') {
+            playSound('hurt');
+            this.wasHurt = true;
+        }
+    }
+
+    /**
+     * Handles normal (non-hurt, non-dead) animations.
+     */
+    handleNormalAnimationState() {
+        this.wasHurt = false;
+        if (this.isAboveGround()) {
+            this.playAnimation(this.IMAGES_JUMPING);
+        } else {
+            this.handleGroundAnimation();
+        }
+    }
+
+    /**
+     * Handles walking and idle animations while the character is on the ground.
+     */
+    handleGroundAnimation() {
+        if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+            this.playAnimation(this.IMAGES_WALKING);
+        } else {
+            this.playIdleOrLongIdle();
+        }
+    }
+
+    /**
+     * Plays either idle or long idle animation depending on time since last move.
+     */
+    playIdleOrLongIdle() {
+        const timeSinceLastMove = new Date().getTime() - this.lastMove;
+        if (timeSinceLastMove < 1000) {
+            this.playAnimation(this.IMAGES_IDLE);
+        } else {
+            this.playAnimation(this.IMAGES_LONGIDLE);
+        }
     }
 }

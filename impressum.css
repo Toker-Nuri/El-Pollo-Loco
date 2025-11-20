@@ -1,0 +1,88 @@
+main {
+    padding: 80px;
+    overflow-y: auto;
+    max-height: 100vh;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+body {
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-image: url('img/desert.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 100vh;
+    background-color: #A26E5B;
+    margin: 0;
+    padding: 0;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Remove scrollbars completely */
+*::-webkit-scrollbar {
+    display: none;
+}
+
+h1, h2, h3, .imprint-wrapper, span, li, p, .impressum-text {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+    text-shadow: 
+        -2px -2px 0 #000,
+        2px -2px 0 #000,
+        -2px 2px 0 #000,
+        2px 2px 0 #000,
+        -2px 0 0 #000,
+        2px 0 0 #000,
+        0 -2px 0 #000,
+        0 2px 0 #000 !important;
+}
+
+
+
+.back-arrow{
+    width: 30px;
+    height: auto;
+}
+
+/* Responsive Design for small screens */
+@media screen and (max-width: 480px) {
+    main {
+        padding: 20px;
+        overflow-y: auto;
+        max-height: 100vh;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    
+    body {
+        overflow-y: auto;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    
+    h1 {
+        font-size: 1.5rem;
+        margin: 10px 0;
+    }
+    
+    h2 {
+        font-size: 1.2rem;
+        margin: 8px 0;
+    }
+    
+    p, li, span {
+        font-size: 0.9rem;
+        line-height: 1.4;
+    }
+    
+    .imprint-wrapper {
+        padding: 10px;
+    }
+}

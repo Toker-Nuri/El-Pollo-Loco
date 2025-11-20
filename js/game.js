@@ -1,15 +1,41 @@
+/**
+ * Canvas element for game rendering
+ * @type {HTMLCanvasElement}
+ */
 let canvas;
+/**
+ * World instance containing game objects and logic
+ * @type {World}
+ */
 let world;
+/**
+ * Keyboard instance for handling user input
+ * @type {Keyboard}
+ */
 let keyboard = new Keyboard();
 
+/**
+ * Initializes the game world and starts the background music.
+ * Creates the level if available, grabs the canvas element and
+ * constructs the World instance.
+ *
+ * @returns {void}
+ */
 function init() {
     if (typeof createLevel1 === 'function') {
         level1 = createLevel1();
     }
     canvas = document.getElementById("canvas");
     world = new World(canvas, keyboard);
+     playSound('game', { loop: true, reset: false });
 }
 
+/**
+ * Handles keydown events and sets the corresponding flags on the Keyboard instance.
+ *
+ * @param {KeyboardEvent} e - The keydown event.
+ * @returns {void}
+ */
 window.addEventListener('keydown', (e) => {
     if (e.keyCode == 37) {
         keyboard.LEFT = true;
@@ -32,6 +58,12 @@ window.addEventListener('keydown', (e) => {
        
 });
 
+/**
+ * Handles keyup events and clears the corresponding flags on the Keyboard instance.
+ *
+ * @param {KeyboardEvent} e - The keyup event.
+ * @returns {void}
+ */
 window.addEventListener('keyup', (e) => {
     if (e.keyCode == 37) {
         keyboard.LEFT = false;
