@@ -3,7 +3,7 @@
  * @extends MoveableObject
  */
 class Bottles extends MovebleObject {
-   
+
     /**
      * Width of the bottle in pixels
      * @type {number}
@@ -14,7 +14,7 @@ class Bottles extends MovebleObject {
      * @type {number}
      */
     height = 80;
-    
+
     /**
      * Array of images for the bottle's ground state
      * @type {string[]}
@@ -56,10 +56,10 @@ class Bottles extends MovebleObject {
         this.x = x;
         this.y = y;
         this.offset = {
-            top: 5,
-            right: 5,
-            bottom: 5,
-            left: 5
+            top: 15,
+            right: 20,
+            bottom: 10,
+            left: 20
         };
         this.collected = false;
     }

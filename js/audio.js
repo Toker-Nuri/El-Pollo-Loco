@@ -1,8 +1,17 @@
-let soundEnabled = true;
+
 /**
  * Audio element for the game sound
  * @type {HTMLAudioElement|null}
  */
+const storedSoundSetting = typeof localStorage !== 'undefined'
+    ? localStorage.getItem('soundEnabled')
+    : null;
+let soundEnabled = storedSoundSetting !== null ? storedSoundSetting === 'true' : true;
+/**
+ * Object containing all sound effects for the game.
+ * @type {Object<string, HTMLAudioElement>}
+ */
+
 const sounds = {
     coin: new Audio('audio/coin.mp3'),
     boss_intro_sound: new Audio('audio/boss_intro_sound.mp3'),
@@ -53,7 +62,7 @@ function playSound(name, { loop = false, reset = true } = {}) {
     audio.loop = loop;
     if (reset) audio.currentTime = 0;
 
-    audio.play().catch(() => {});
+    audio.play().catch(() => { });
 }
 
 /**
@@ -102,16 +111,43 @@ function pauseAllSounds() {
  */
 function toggleAudioAndImage() {
     soundEnabled = !soundEnabled;
-    const icon = document.getElementById('audio-toggle');
-    if (!icon) return;
-
-    if (soundEnabled) {
-        icon.src = 'img/icons/SOUND_ON_icon.png';
-        icon.alt = 'Sound On';
-        playSound('game', { loop: true, reset: false });
-    } else {
-        icon.src = 'img/icons/SOUND_OFF_icon.png';
-        icon.alt = 'Sound Off';
-        pauseAllSounds();
+    if (typeof localStorage !== 'undefined') {
+        localStorage.setItem('soundEnabled', soundEnabled ? 'true' : 'false');
     }
+    updateAudioUI();
+    if (!soundEnabled) {
+        pauseAllSounds();
+    } else if (typeof world !== 'undefined' && world) {
+        playSound('game', { loop: true, reset: false });
+    }
+}
+
+/**
+ * Toggles sound from the settings overlay button.
+ * Delegates to toggleAudioAndImage so that button and icon stay in sync.
+ */
+function toggleSound() {
+    toggleAudioAndImage();
+}
+
+/**
+ * Updates the audio icon and settings button text based on the current soundEnabled state.
+ */
+function updateAudioUI() {
+    const icon = document.getElementById('audio-toggle');
+    if (icon) {
+        icon.src = soundEnabled ? 'img/icons/SOUND_ON_icon.png' : 'img/icons/SOUND_OFF_icon.png';
+        icon.alt = soundEnabled ? 'Sound On' : 'Sound Off';
+    }
+    const settingsButton = document.getElementById('sound-control-btn');
+    if (settingsButton) {
+        settingsButton.textContent = soundEnabled ? 'Sound On' : 'Sound Off';
+    }
+}
+
+if (typeof document !== 'undefined') {
+    document.addEventListener('DOMContentLoaded', () => {
+        updateAudioUI();
+    });
+
 }

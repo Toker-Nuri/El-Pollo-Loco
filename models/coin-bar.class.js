@@ -1,8 +1,28 @@
+/**
+ * Represents a graphical bar that displays collected coins
+ * @extends DrawableObject
+ */
 class CoinBar extends DrawableObject {
+    /**
+     * Percentage of collected coins
+     * @type {number}
+     */
     percentage = 0;
+    /**
+     * Number of collected coins
+     * @type {number}
+     */
     collectedCoins = 0;
+    /**
+     * Total number of coins to collect
+     * @type {number}
+     */
     TOTAL_COINS = 11;
 
+    /**
+     * Array of coin images for different percentages
+     * @type {string[]}
+     */
     IMAGES_COINS = [
         'img/7_statusbars/1_statusbar/1_statusbar_coin/blue/0.png',
         'img/7_statusbars/1_statusbar/1_statusbar_coin/blue/20.png',
@@ -12,6 +32,10 @@ class CoinBar extends DrawableObject {
         'img/7_statusbars/1_statusbar/1_statusbar_coin/blue/100.png'
     ];
 
+    /**
+     * Creates a new CoinBar instance
+     * @constructor
+     */
     constructor() {
         super();
         this.loadImages(this.IMAGES_COINS);
@@ -22,6 +46,10 @@ class CoinBar extends DrawableObject {
         this.setPercentage(0);
     }
 
+    /**
+     * Sets the percentage of collected coins and updates the displayed image
+     * @param {number} collectedCoins - Number of collected coins
+     */
     setPercentage(collectedCoins) {
         this.collectedCoins = collectedCoins;
         this.percentage = (this.collectedCoins / this.TOTAL_COINS) * 100;
@@ -29,19 +57,11 @@ class CoinBar extends DrawableObject {
         this.img = this.imageCache[path];
     }
 
+    /**
+     * Resolves the index of the coin image based on the current percentage
+     * @returns {number} Index of the coin image
+     */
     resolveImageIndex() {
-        if (this.percentage >= 100) {
-            return 5;
-        } else if (this.percentage >= 80) {
-            return 4;
-        } else if (this.percentage >= 60) {
-            return 3;
-        } else if (this.percentage >= 40) {
-            return 2;
-        } else if (this.percentage >= 20) {
-            return 1;
-        } else {
-            return 0;
-        }
+  return resolveBarIndex(this.percentage);
     }
 }

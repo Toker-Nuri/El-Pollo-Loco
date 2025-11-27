@@ -24,9 +24,7 @@ function drawWorld(world) {
     world.addObjectsToMap(world.level.enemies);
     world.addObjectsToMap(world.coins);
     world.ctx.translate(-world.camera_x, 0);
-
     drawStatusBars(world);
-
     world.ctx.translate(world.camera_x, 0);
     world.addObjectsToMap(world.bottles);
     world.addToMap(world.character);
@@ -315,7 +313,10 @@ function handleThrowObjects(world) {
  * @returns {boolean}
  */
 function canThrowBottle(world) {
-    return world.keyboard.D && world.collectedBottles > 0 && !world.bottleThrowTimeout;
+    return world.keyboard.D &&
+        world.collectedBottles > 0 &&
+        !world.bottleThrowTimeout &&
+        !world.character.otherDirection;
 }
 
 /**
@@ -343,9 +344,10 @@ function spawnThrowableBottle(world) {
     world.throwableObjects.push(bottle);
     world.collectedBottles--;
     world.bottleThrowTimeout = true;
+    world.character.lastMove = new Date().getTime();
     setTimeout(() => {
         world.bottleThrowTimeout = false;
-    }, 500);
+    }, 800);
     world.bottleBar.setPercentage(world.collectedBottles);
     world.keyboard.D = false;
 }

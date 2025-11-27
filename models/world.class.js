@@ -2,25 +2,124 @@
  * Represents the game world including character, level, enemies and UI elements.
  */
 class World {
+    /**
+     * The character instance.
+     * @type {Charakter}
+     */
     character = new Charakter();
+
+    /**
+     * The level instance.
+     * @type {Level}
+     */
     level = level1;
+
+    /**
+     * The canvas element.
+     * @type {HTMLCanvasElement}
+     */
     canvas;
+
+    /**
+     * The canvas context.
+     * @type {CanvasRenderingContext2D}
+     */
     ctx;
+
+    /**
+     * The keyboard handler instance.
+     * @type {Keyboard}
+     */
     keyboard;
+
+    /**
+     * The camera x position.
+     * @type {number}
+     */
     camera_x = 0;
+
+    /**
+     * The status bar instance.
+     * @type {StatusBar}
+     */
     statusBar = new StatusBar();
+
+    /**
+     * The coin bar instance.
+     * @type {CoinBar}
+     */
     coinBar = new CoinBar();
+
+    /**
+     * The bottle bar instance.
+     * @type {BottleBar}
+     */
     bottleBar = new BottleBar();
+
+    /**
+     * The endboss bar instance.
+     * @type {EndbossBar}
+     */
     endbossBar = new EndbossBar();
+
+    /**
+     * The bottles array.
+     * @type {ThrowableObject[]}
+     */
     bottles = [];
+
+    /**
+     * The coins array.
+     * @type {ThrowableObject[]}
+     */
     coins = [];
+
+    /**
+     * The throwable objects array.
+     * @type {ThrowableObject[]}
+     */
     throwableObjects = [];
+
+    /**
+     * The total number of bottles.
+     * @type {number}
+     */
     TOTAL_BOTTLES = 10;
+
+    /**
+     * The total number of coins.
+     * @type {number}
+     */
     TOTAL_COINS = 11;
+
+    /**
+     * The collected coins count.
+     * @type {number}
+     */
     collectedCoins = 0;
+
+    /**
+     * The collected bottles count.
+     * @type {number}
+     */
     collectedBottles = 0;
+
+    /**
+     * The bottle throw timeout flag.
+     * @type {boolean}
+     */
     bottleThrowTimeout = false;
+
+    /**
+     * The character previous bottom position.
+     * @type {number}
+     */
     characterPrevBottom = 0;
+    
+    /**
+     * The game over instance.
+     * @type {GameOver}
+     */
     gameOver = null;
 
     /**
@@ -33,7 +132,6 @@ class World {
         this.ctx = canvas.getContext("2d");
         this.canvas = canvas;
         this.keyboard = keyboard;
-
         this.createBottles();
         this.createCoins();
         this.draw();

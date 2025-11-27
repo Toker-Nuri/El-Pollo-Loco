@@ -104,6 +104,22 @@ class ThrowableObject extends MovebleObject {
     }
 
     /**
+     * Applies gravity to the object
+     */
+    applyGravity() {
+        setInterval(() => {
+            if (this.isSplashing) return;
+            this.y -= this.speedY;
+            this.speedY -= this.acceleration;
+            const groundY = 360;
+            if (this.y >= groundY && this.speedY < 0) {
+                this.y = groundY;
+                this.splash();
+            }
+        }, 1000 / 30);
+    }
+
+    /**
      * Animates the bottle rotation
      */
     animate() {
@@ -114,9 +130,10 @@ class ThrowableObject extends MovebleObject {
         }, 60);
 
     }
-/**
- * Handles the splash animation of the bottle
- */
+
+    /**
+     * Handles the splash animation of the bottle
+     */
     splash() {
         if (this.isSplashing) return;
         this.isSplashing = true;
@@ -155,9 +172,10 @@ class ThrowableObject extends MovebleObject {
         }
         this.toBeRemoved = true;
     }
-/**
- * Clears the rotation interval of the object
- */
+
+    /**
+     * Clears the rotation interval of the object
+     */
     clearRotationInterval() {
         if (this.rotationInterval) {
             clearInterval(this.rotationInterval);

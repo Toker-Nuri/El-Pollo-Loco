@@ -83,12 +83,12 @@ class MovebleObject extends DrawableObject {
      * @param {Object} obj - The object to check collision with
      * @returns {boolean}
      */
-    isColliding(obj) {
-        return (this.x + this.offset.left) < (obj.x + obj.width - obj.offset.right) &&
-            (this.x + this.width - this.offset.right) > (obj.x + obj.offset.left) &&
-            (this.y + this.offset.top) < (obj.y + obj.height - obj.offset.bottom) &&
-            (this.y + this.height - this.offset.bottom) > (obj.y + obj.offset.top);
-    }
+   isColliding(obj) {
+    return (this.x + this.offset.left) < (obj.x + obj.width - obj.offset.right) &&
+           (this.x + this.width - this.offset.right) > (obj.x + obj.offset.left) &&
+           (this.y + this.offset.top) < (obj.y + obj.height - obj.offset.bottom) &&
+           (this.y + this.height - this.offset.bottom) > (obj.y + obj.offset.top);
+}
 
     /**
      * Checks if the object is jumping on another object

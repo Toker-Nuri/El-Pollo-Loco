@@ -4,29 +4,120 @@
  * @extends MovebleObject
  */
 class Endboss extends MovebleObject {
+    /**
+     * Height of the endboss in pixels
+     * @type {number}
+     */
     height = 400;
-    width = 250; 
+    /**
+     * Width of the endboss in pixels
+     * @type {number}
+     */
+    width = 250;
+    /**
+     * Y-coordinate position of the endboss
+     * @type {number}
+     */
     y = 65;
-    speed = 2;
+    /**
+     * Speed of the endboss in pixels per second
+     * @type {number}
+     */
+    speed = 4;
+    /**
+     * Whether the endboss is activated
+     * @type {boolean}
+     */
     isActivated = false;
+    /**
+     * Whether the alert sound has been played
+     * @type {boolean}
+     */
     hasAlertPlayed = false;
+    /**
+     * Whether the endboss is attacking
+     * @type {boolean}
+     */
     isAttacking = false;
+    /**
+     * Whether the endboss is taking damage
+     * @type {boolean}
+     */
     isTakingDamage = false;
+    /**
+     * Whether the endboss is dying
+     * @type {boolean}
+     */
     isDying = false;
-    hitsRemaining = 8;
+    /**
+     * Number of hits remaining before the endboss dies
+     * @type {number}
+     */
+    hitsRemaining = 5;
+    /**
+     * Whether the endboss is dead
+     * @type {boolean}
+     */
     isDead = false;
-    ALERT_DURATION = 100;      
-    MOVE_DURATION = 800;      
-    ATTACK_DURATION = 800;     
+    /**
+     * Duration of the alert phase in milliseconds
+     * @type {number}
+     */
+    ALERT_DURATION = 100;
+    /**
+     * Duration of the move phase in milliseconds
+     * @type {number}
+     */
+    MOVE_DURATION = 1000;
+    /**
+     * Duration of the attack phase in milliseconds
+     * @type {number}
+     */
+    ATTACK_DURATION = 1000;
+    /**
+     * Whether the alert phase is scheduled
+     * @type {boolean}
+     */
     alertScheduled = false;
+    /**
+     * Whether the endboss is moving
+     * @type {boolean}
+     */
     isMoving = false;
+    /**
+     * Timestamp of the last action
+     * @type {number}
+     */
     lastActionTime = 0;
+    /**
+     * Whether the death animation has been played
+     * @type {boolean}
+     */
     deathAnimationPlayed = false;
+    /**
+     * Whether the death animation has started
+     * @type {boolean}
+     */
     deathAnimationStarted = false;
+    /**
+     * Whether the hurt animation is playing
+     * @type {boolean}
+     */
     hurtPlaying = false;
-    phase = 'idle'; 
+    /**
+     * Current phase of the endboss
+     * @type {string}
+     */
+    phase = 'idle';
+    /**
+     * Timestamp of the start of the current action
+     * @type {number}
+     */
     actionStartTime = 0;
-
+    /**
+     * Array of images for the alert phase
+     * @type {string[]}
+     */
     IMAGES_ALERT = [
         'img/4_enemie_boss_chicken/2_alert/G5.png',
         'img/4_enemie_boss_chicken/2_alert/G6.png',
@@ -37,7 +128,10 @@ class Endboss extends MovebleObject {
         'img/4_enemie_boss_chicken/2_alert/G11.png',
         'img/4_enemie_boss_chicken/2_alert/G12.png'
     ];
-
+    /**
+     * Array of images for the attack phase
+     * @type {string[]}
+     */
     IMAGES_ATTACK = [
         'img/4_enemie_boss_chicken/3_attack/G13.png',
         'img/4_enemie_boss_chicken/3_attack/G14.png',
@@ -48,11 +142,19 @@ class Endboss extends MovebleObject {
         'img/4_enemie_boss_chicken/3_attack/G19.png',
         'img/4_enemie_boss_chicken/3_attack/G20.png'
     ];
+    /**
+     * Array of images for the hurt phase
+     * @type {string[]}
+     */
     IMAGES_HURT = [
         'img/4_enemie_boss_chicken/4_hurt/G21.png',
         'img/4_enemie_boss_chicken/4_hurt/G22.png',
         'img/4_enemie_boss_chicken/4_hurt/G23.png'
     ];
+    /**
+     * Array of images for the dead phase
+     * @type {string[]}
+     */
     IMAGES_DEAD = [
         'img/4_enemie_boss_chicken/5_dead/G24.png',
         'img/4_enemie_boss_chicken/5_dead/G25.png',
@@ -96,9 +198,9 @@ class Endboss extends MovebleObject {
     initOffset() {
         this.offset = {
             top: 60,
-            right: 20,
+            right: 30,
             bottom: 30,
-            left: 20
+            left: 30
         };
     }
 
@@ -291,103 +393,5 @@ class Endboss extends MovebleObject {
      */
     canStartAlert() {
         return this.isActivated && !this.hasAlertPlayed;
-    }
-
-    /**
-     * Schedules the alert timeout and plays the intro sound.
-     */
-    scheduleAlert() {
-        this.alertScheduled = true;
-        setTimeout(() => {
-            this.hasAlertPlayed = true;
-            this.isAttacking = true;
-            this.phase = 'attack';
-            this.actionStartTime = new Date().getTime();
-        }, this.ALERT_DURATION);
-        playSound('boss_intro_sound');
-    }
-
-    /**
-     * Returns whether the boss is currently in an attacking state.
-     *
-     * @returns {boolean}
-     */
-    isAttack() {
-        return this.isAttacking && !this.isDead && !this.isDying;
-    }
-
-    /**
-     * Applies damage to the boss when hit by a bottle and updates UI and state.
-     */
-    takeHitFromBottle() {
-        if (this.isDying || this.isDead) {
-            return;
-        }
-        const percentage = this.updateHitsAndEnergy();
-        this.updateEndbossHealthBar(percentage);
-        this.startDamageCooldown();
-        this.checkDeathAfterHit();
-        playSound('chicken_die');
-    }
-
-    /**
-     * Updates remaining hits and converts them into an energy percentage.
-     *
-     * @returns {number} New health percentage of the boss.
-     */
-    updateHitsAndEnergy() {
-        this.hitsRemaining = Math.max(0, this.hitsRemaining - 1);
-        const percentage = Math.round((this.hitsRemaining / 8) * 100);
-        this.energy = percentage;
-        this.lastHit = new Date().getTime();
-        this.isTakingDamage = true;
-        return percentage;
-    }
-
-    /**
-     * Updates the endboss health bar in the world, if it exists.
-     *
-     * @param {number} percentage - New health percentage.
-     */
-    updateEndbossHealthBar(percentage) {
-        if (this.world && this.world.endbossBar) {
-            this.world.endbossBar.setPercentage(percentage);
-        }
-    }
-
-    /**
-     * Starts a short cooldown after which the damage state is cleared.
-     */
-    startDamageCooldown() {
-        setTimeout(() => {
-            this.isTakingDamage = false;
-        }, 400);
-    }
-
-    /**
-     * Checks whether the boss should die after the most recent hit.
-     */
-    checkDeathAfterHit() {
-        if (this.hitsRemaining === 0) {
-            this.die();
-        }
-    }
-
-    /**
-     * Starts the death sequence of the boss.
-     */
-    die() {
-        if (this.isDying || this.isDead) return;
-        this.isDying = true;
-        this.speed = 0;
-
-        playSound('boss_dead');
-    }
-
-    /**
-     * Kills the boss. Convenience alias for die().
-     */
-    kill() {
-        this.die();
     }
 }

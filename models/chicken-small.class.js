@@ -55,10 +55,16 @@ class ChickenSmall extends MovebleObject {
     constructor() {
         super().loadImage('img/3_enemies_chicken/chicken_small/1_walk/1_w.png');
         this.loadImages(this.IMAGES_WALKING);
-        this.loadImages(this.IMAGES_DEAD);  
+        this.loadImages(this.IMAGES_DEAD);
         this.x = 700 + Math.random() * 600;
         this.speed = 0.15 + Math.random() * 0.5;
         this.animate();
+        this.offset = {
+            top: 10,
+            right: 10,
+            bottom: 5,
+            left: 10
+        };
     }
 
     /**
@@ -89,10 +95,10 @@ class ChickenSmall extends MovebleObject {
         if (!this.isDead) {
             this.isDead = true;
             this.speed = 0;
-             playSound('chicken_die');
+            playSound('chicken_die');
             this.loadImage(this.IMAGES_DEAD[0]);
             this.deathTimeout = setTimeout(() => {
-                this.height = 0; 
+                this.height = 0;
             }, 1000);
         }
 

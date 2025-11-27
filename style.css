@@ -89,7 +89,6 @@ h1 {
 
 .over-button {
     padding: 10px 15px;
-    ;
     font-family: 'Rye', cursive;
     font-size: 20px;
     border: solid 3px #A26E5B;
@@ -180,7 +179,12 @@ h1 {
     padding-left: 40px;
     width: 350px;
 }
-
+.container-notice{
+    flex-direction: column;
+}
+.notice{
+    font-size: 12px;
+}
 .controls img {
     width: 50px;
 }
@@ -441,6 +445,103 @@ h1 {
 .impressum a:hover {
     text-decoration: underline;
     color: white;
+}
+
+.fullscreen-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1600;
+}
+
+.fullscreen-overlay.hidden {
+    display: none;
+}
+
+.fullscreen-dialog {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px 24px;
+    border-radius: 12px;
+    max-width: 320px;
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.fullscreen-dialog p {
+    margin: 0 0 16px 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.fullscreen-button {
+    padding: 10px 18px;
+    font-family: 'Rye', cursive;
+    font-size: 18px;
+    border: solid 3px #A26E5B;
+    border-radius: 10px;
+    transition: all 0.2s ease-in-out;
+    background: #ffb700;
+    color: #000;
+    cursor: pointer;
+}
+
+.fullscreen-button:hover {
+    transform: scale(1.05);
+    background: #ffd7a2;
+}
+
+.fullscreen-button img {
+    width: 16px;
+    height: 16px;
+    pointer-events: none;
+}
+
+.fullscreen-exit-button {
+    display: none;
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    top: 10px;
+    left: 55%;
+    transform: translateX(-50%);
+    z-index: 100;
+    padding: 6px 10px;
+    font-size: 14px;
+    font-family: 'Rye', cursive;
+    border: solid 2px #A26E5B;
+    border-radius: 8px;
+    background: #ffb700;
+    color: #000;
+    cursor: pointer;
+}
+
+.fullscreen-exit-button img {
+    width: 16px;
+    height: 16px;
+    pointer-events: none;
+}
+
+@media screen and (max-width: 1270px) {
+    .fullscreen-button {
+        display: flex;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100px;
+    }
+    .fullscreen-exit-button {
+        display: flex;
+    }
 }
 
 @media screen and (orientation: portrait) {

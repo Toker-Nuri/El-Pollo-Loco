@@ -3,9 +3,21 @@
  * @extends MovebleObject
  */
 class Coins extends MovebleObject {
+    /**
+     * Width of the coin in pixels
+     * @type {number}
+     */
     width = 100;
+    /**
+     * Height of the coin in pixels
+     * @type {number}
+     */
     height = 100;
     
+    /**
+     * Array of coin images for animation
+     * @type {string[]}
+     */
     IMAGES_COINS = [
       'img/8_coin/coin_1.png',
       'img/8_coin/coin_2.png'
@@ -23,6 +35,7 @@ class Coins extends MovebleObject {
         this.loadImages(this.IMAGES_COINS);     
         this.initializeProperties(x, y);
         this.animate();
+        
     }
 
     /**
@@ -36,10 +49,10 @@ class Coins extends MovebleObject {
         this.x = x;
         this.y = y;
         this.offset = {
-            top: 5,
-            right: 5,
-            bottom: 5,
-            left: 5
+            top: 15,
+            right: 15,
+            bottom: 15,
+            left: 15
         };
         this.collected = false;
     }

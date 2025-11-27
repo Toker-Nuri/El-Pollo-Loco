@@ -28,6 +28,9 @@ function startGame() {
         mobileUi.classList.remove('hidden');
     }
     init(); 
+    if (typeof playSound === 'function' && soundEnabled) {
+        playSound('game', { loop: true, reset: true });
+    }
 }
 
 /**
@@ -169,6 +172,33 @@ function restartGame() {
  * @returns {void}
  */
 function backToMenu() {
-    location.href = 'index.html';
+   const overlay = document.getElementById('game-over-overlay');
+   if (overlay){
+    overlay.classList.add('hidden');
+   }
+   const mainMenu = document.getElementById('main-menu');
+   if (mainMenu){
+    mainMenu.classList.remove('hidden');
+   }
+   setCanvasHidden(true);
+   const mobileUi =document.getElementById('mobile-touch.interface');
+   if (mobileUi){
+    mobileUi.classList.add('hidden');
+    showImpressum();
+    resetGame();
+   }
+}
+
+/**
+ * Resets the game state by clearing intervals, canceling animation frames,
+ * and re-initializing the world and keyboard.
+ *
+ * @returns {void}
+ */
+function resetGame() {
+    if (window.gameIntervalId) clearInterval(window.gameIntervalId);
+    if (window.animationFrameId) cancelAnimationFrame(window.animationFrameId);
+    world = null;
+    keyboard = new Keyboard();
 }
 
