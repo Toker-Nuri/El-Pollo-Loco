@@ -3,7 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>El Pollo Loco</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/png" href="img/icons/favicon_chicken.png">
@@ -48,15 +49,6 @@
         <H1>El Pollo Loco</H1>
     </div>
     <div id="game-container" class="game-container">
-        <div id="fullscreen-overlay" class="fullscreen-overlay hidden">
-            <div class="fullscreen-dialog">
-                <p>Bitte auf Vollbildmodus umschalten, um optimal zu spielen.</p>
-                <button id="enter-fullscreen-btn" class="fullscreen-button">Vollbild</button>
-            </div>
-        </div>
-        <button id="fullscreen-exit-btn" class="fullscreen-exit-button" style="display: none;">
-            <img id="fullscreen-toggle-icon" src="img/icons/full-screen-start.png" style="width: 16px; height: 16px;" alt="Vollbild umschalten">
-        </button>
         <div id="main-menu" class="main-menu">
             <img src="img/9_intro_outro_screens/start/startscreen_2.png" alt="Start Screen">
             <div class="start-button-wrapper">
@@ -69,6 +61,15 @@
         <div id="audio-controls" class="audio-controls">
             <img id="audio-toggle" onclick="toggleAudioAndImage()" class="audio-icon" src="img/icons/SOUND_ON_icon.png"
                 alt="Audio umschalten">
+        </div>
+        <div id="fullscreen-overlay" class="fullscreen-overlay hidden">
+            <div class="fullscreen-dialog">
+                <p>Bitte auf Vollbildmodus umschalten, um optimal zu spielen.</p>
+                <button id="enter-fullscreen-btn" class="fullscreen-button">Vollbild</button>
+            </div>
+        </div>
+        <div id="fullscreen-toggle-container" class="fullscreen-toggle-container">
+            <img id="fullscreen-toggle-icon" class="fullscreen-toggle-icon" onclick="toggleFullscreen()" src="img/icons/full-screen-start.png" alt="Vollbild umschalten">
         </div>
         <div id="game-over-overlay" class="game-over-overlay hidden">
             <img id="game-over-image" src="" alt="Game Over">

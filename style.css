@@ -179,12 +179,15 @@ h1 {
     padding-left: 40px;
     width: 350px;
 }
-.container-notice{
+
+.container-notice {
     flex-direction: column;
 }
-.notice{
+
+.notice {
     font-size: 12px;
 }
+
 .controls img {
     width: 50px;
 }
@@ -493,6 +496,7 @@ h1 {
     background: #ffb700;
     color: #000;
     cursor: pointer;
+
 }
 
 .fullscreen-button:hover {
@@ -506,8 +510,7 @@ h1 {
     pointer-events: none;
 }
 
-.fullscreen-exit-button {
-    display: none;
+.fullscreen-toggle-container {
     position: absolute;
     justify-content: center;
     align-items: center;
@@ -515,33 +518,43 @@ h1 {
     left: 55%;
     transform: translateX(-50%);
     z-index: 100;
-    padding: 6px 10px;
+    padding: 6px 6px;
     font-size: 14px;
     font-family: 'Rye', cursive;
     border: solid 2px #A26E5B;
     border-radius: 8px;
     background: #ffb700;
-    color: #000;
     cursor: pointer;
 }
 
-.fullscreen-exit-button img {
+.fullscreen-toggle-container{
+    display: none;
+}
+
+.fullscreen-toggle-icon {
     width: 16px;
     height: 16px;
-    pointer-events: none;
+    cursor: pointer;
+    display: block;
 }
 
 @media screen and (max-width: 1270px) {
     .fullscreen-button {
         display: flex;
-        display: flex;
         justify-content: center;
         align-items: center;
         width: 100px;
     }
-    .fullscreen-exit-button {
-        display: flex;
-    }
+
+   
+    .fullscreen-toggle-icon {
+        width: 16px !important;
+        height: 16px !important;
+        cursor: pointer;
+        transition: opacity 0.2s ease;
+        opacity: 0.8;
+    
+}
 }
 
 @media screen and (orientation: portrait) {
@@ -569,6 +582,10 @@ h1 {
 
     .mobile-touch-interface.hidden {
         display: none !important;
+    }
+
+     .fullscreen-toggle-container {
+        display: flex !important;
     }
 
     .rotate-screen {

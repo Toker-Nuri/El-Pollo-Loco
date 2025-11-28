@@ -13,17 +13,30 @@ let world;
  * @type {Keyboard}
  */
 let keyboard = new Keyboard();
-
+/**
+ * FullScreen 
+ * @type {boolean}
+ */
 let fullscreenRequestedOnce = false;
-
+/**
+ * Returns the fullscreen overlay element
+ * @returns {HTMLElement}
+ */
 function getFullscreenOverlay() {
     return document.getElementById('fullscreen-overlay');
 }
-
-function getFullscreenExitButton() {
-    return document.getElementById('fullscreen-exit-btn');
+/**
+ * Returns the fullscreen toggle container element
+ * @returns {HTMLElement}
+ */
+function getFullscreenToggleContainer() {
+    return document.getElementById('fullscreen-toggle-container');
 }
 
+/**
+ * Updates the fullscreen button icon based on the fullscreen state
+ * @param {boolean} isFullscreen - Whether the page is in fullscreen mode
+ */
 function updateFullscreenButtonIcon(isFullscreen) {
     const icon = document.getElementById('fullscreen-toggle-icon');
     if (!icon) {
@@ -33,16 +46,39 @@ function updateFullscreenButtonIcon(isFullscreen) {
         ? 'img/icons/full-screen-end.png'
         : 'img/icons/full-screen-start.png';
 }
-
+/**
+ * Toggles fullscreen mode on/off
+ */
+function toggleFullscreen() {
+    const doc = document;
+    const isFullscreen = !!(doc.fullscreenElement || doc.webkitFullscreenElement || doc.msFullscreenElement);
+    
+    if (isFullscreen) {
+        updateFullscreenButtonIcon(false);
+        exitFullscreen();
+    } else {
+        updateFullscreenButtonIcon(true);
+        enterFullscreen();
+    }
+}
+/**
+ * Returns the fullscreen element
+ * @returns {HTMLElement}
+ */
 function getFullscreenElement() {
     return document.documentElement;
 }
-
+/**
+ * Checks if the browser supports fullscreen mode
+ * @returns {boolean}
+ */
 function canUseFullscreen() {
     const elem = getFullscreenElement();
     return !!(elem && (elem.requestFullscreen || elem.webkitRequestFullscreen || elem.msRequestFullscreen));
 }
-
+/**
+ * Enters fullscreen mode
+ */
 function enterFullscreen() {
     const elem = getFullscreenElement();
     if (!elem) {
@@ -56,7 +92,9 @@ function enterFullscreen() {
         elem.msRequestFullscreen();
     }
 }
-
+/**
+ * Asks the user for fullscreen mode
+ */
 function askUserForFullscreen() {
     if (!canUseFullscreen() || fullscreenRequestedOnce) {
         return;
@@ -67,7 +105,9 @@ function askUserForFullscreen() {
         overlay.classList.remove('hidden');
     }
 }
-
+/**
+ * Sets up fullscreen mode on the next interaction
+ */
 function setupFullscreenOnNextInteraction() {
     const handler = () => {
         askUserForFullscreen();
@@ -77,7 +117,9 @@ function setupFullscreenOnNextInteraction() {
     window.addEventListener('touchend', handler, { once: true });
     window.addEventListener('click', handler, { once: true });
 }
-
+/**
+ * Handles orientation change events
+ */
 function handleOrientationChange() {
     if (window.matchMedia && window.matchMedia('(orientation: landscape)').matches) {
         setTimeout(() => {
@@ -87,7 +129,9 @@ function handleOrientationChange() {
 }
 
 window.addEventListener('orientationchange', handleOrientationChange);
-
+/**
+ * Exits fullscreen mode
+ */
 function exitFullscreen() {
     const doc = document;
     if (doc.exitFullscreen) {
@@ -98,22 +142,27 @@ function exitFullscreen() {
         doc.msExitFullscreen();
     }
 }
-
+/**
+ * Checks if the screen is mobile or small
+ * @returns {boolean}
+ */
 function isMobileOrSmallScreen() {
     return window.innerWidth < 1270;
 }
-
+/**
+ * Handles fullscreen change events
+ */
 function handleFullscreenChange() {
     const doc = document;
     const isFullscreen = !!(doc.fullscreenElement || doc.webkitFullscreenElement || doc.msFullscreenElement);
-    const exitBtn = getFullscreenExitButton();
+    const toggleContainer = getFullscreenToggleContainer();
     
     updateFullscreenButtonIcon(isFullscreen);
     
-    if (exitBtn && isMobileOrSmallScreen()) {
-        exitBtn.style.display = 'flex';
-    } else if (exitBtn) {
-        exitBtn.style.display = 'none';
+    if (toggleContainer && isMobileOrSmallScreen()) {
+        toggleContainer.style.display = 'flex';
+    } else if (toggleContainer) {
+        toggleContainer.style.display = 'none';
     }
     
     if (!isFullscreen) {
@@ -131,26 +180,11 @@ document.addEventListener('msfullscreenchange', handleFullscreenChange);
 document.addEventListener('DOMContentLoaded', () => {
     const overlay = getFullscreenOverlay();
     const enterBtn = document.getElementById('enter-fullscreen-btn');
-    const exitBtn = getFullscreenExitButton();
 
     if (overlay && enterBtn) {
         enterBtn.addEventListener('click', () => {
             overlay.classList.add('hidden');
             enterFullscreen();
-        });
-    }
-
-    if (exitBtn) {
-        exitBtn.addEventListener('click', () => {
-            const doc = document;
-            const isFullscreen = !!(doc.fullscreenElement || doc.webkitFullscreenElement || doc.msFullscreenElement);
-            if (isFullscreen) {
-                updateFullscreenButtonIcon(false);
-                exitFullscreen();
-            } else {
-                updateFullscreenButtonIcon(true);
-                enterFullscreen();
-            }
         });
     }
 });

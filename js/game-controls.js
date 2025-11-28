@@ -31,6 +31,16 @@ function startGame() {
     if (typeof playSound === 'function' && soundEnabled) {
         playSound('game', { loop: true, reset: true });
     }
+    
+    // Zeige Fullscreen-Overlay auf kleinen Bildschirmen
+    if (typeof isMobileOrSmallScreen === 'function' && isMobileOrSmallScreen()) {
+        setTimeout(() => {
+            if (typeof askUserForFullscreen === 'function') {
+                fullscreenRequestedOnce = false; // Erlaube erneute Anfrage
+                askUserForFullscreen();
+            }
+        }, 500);
+    }
 }
 
 /**
